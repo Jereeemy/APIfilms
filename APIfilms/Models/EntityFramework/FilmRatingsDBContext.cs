@@ -43,20 +43,27 @@ namespace APIfilms.Models.EntityFramework
                     .HasConstraintName("fk_notesutilisateur_utilisateur");
             });
 
-            modelBuilder.Entity<Film>(entity =>
+           /* modelBuilder.Entity<Film>(entity =>
             {
                 entity.HasKey(e => e.FilmId).HasName("pk_film2");
-            });
+            });*/
 
 
             modelBuilder.Entity<Utilisateur>(entity =>
             {
-               /* entity.Property(b => b.Pays).HasDefaultValue("France");
+                entity.Property(b => b.Pays).HasDefaultValue("France");
 
-                entity.Property(b => b.DateCreation).HasDefaultValueSql("now()");*/
+                entity.Property(b => b.DateCreation).HasDefaultValueSql("now()");
 
                 entity.HasIndex(c => c.Mail).IsUnique();
+
             });
+
+            /*modelBuilder.Entity<Notation>(entity =>
+            {
+                entity.Property(b => b.Note).
+
+            });*/
 
 
             /*modelBuilder.Entity<Film>(entity =>

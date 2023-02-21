@@ -57,7 +57,7 @@ namespace APIfilms.Models.EntityFramework
 
             
         [Column("not_note")]
-        [Range(0,5)]
+        /*[Range(0,5)]*/
         [Required]
 
         public int Note
