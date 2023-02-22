@@ -5,19 +5,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace APIfilms.Models.EntityFramework
 {
     //[PrimaryKey("FilmNote,UtilisateurNotant")]
-    [Table("T_J_NOTATION_NOT")]
+    
+    [Table("t_j_notation_not")]
     public partial class Notation
     {
         private int utl_id;
-        private int flm_id;
-        private int not_note;
+        private int? flm_id;
+        private int? not_note;
 
 
-        [ForeignKey(nameof(Film))]
+        [ForeignKey("FilmId")]
         [InverseProperty("NotesFilm")]
         public virtual Film FilmNote { get; set; } = null!;
 
-        [ForeignKey(nameof(Film))]
+        [ForeignKey("UtilisateurId")]
         [InverseProperty("NotesUtilisateur")]
         public virtual Utilisateur UtilisateurNotant { get; set; } = null!;
 
@@ -42,7 +43,7 @@ namespace APIfilms.Models.EntityFramework
         [Column("flm_id")]
         [ForeignKey("Film")]
 
-        public int FilmId
+        public int? FilmId
         {
             get
             {
@@ -60,7 +61,7 @@ namespace APIfilms.Models.EntityFramework
         /*[Range(0,5)]*/
         [Required]
 
-        public int Note
+        public int? Note
         {
             get
             {

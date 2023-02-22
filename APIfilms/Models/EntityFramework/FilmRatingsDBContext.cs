@@ -8,7 +8,7 @@ namespace APIfilms.Models.EntityFramework
 {
     public partial class FilmRatingsDBContext : DbContext
     {
-        public FilmRatingsDBContext()
+       public FilmRatingsDBContext()
         {
         }
 
@@ -17,38 +17,47 @@ namespace APIfilms.Models.EntityFramework
         {
         }
 
-        public virtual DbSet<Film> Films { get; set; }
-
-        public virtual DbSet<Notation> Notations { get; set; }
-
-        public virtual DbSet<Utilisateur> Utilisateurs { get; set; }
-
+        public virtual DbSet<Notation> Notations { get; set; } = null!;
+        public virtual DbSet<Utilisateur> Utilisateurs { get; set; } = null!;
+        public virtual DbSet<Film> Films { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-
-            => optionsBuilder.UseNpgsql("Server=localhost;port=5432;Database=FilmsDB; uid=postgres; password=postgres;");
+        {
+            /*if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseNpgsql("Server=localhost;port=5432;Database=FilmsDB; uid=postgres;password=postgres;");
+            }*/
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Notation>(entity =>
             {
-                entity.HasKey(e => new { e.FilmId, e.UtilisateurId }).HasName("pk_notation");
+                entity.HasKey(e => new { e.FilmId, e.UtilisateurId })
+                    .HasName("pk_avis");
 
-                entity.HasOne(d => d.FilmNote).WithMany(p => p.NotesFilm).HasForeignKey(d => d.FilmId)
+                entity.HasOne(d => d.FilmNote)
+                    .WithMany(p => p.NotesFilm)
+                    .HasForeignKey(d => d.FilmId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_notesfilm_film");
+                    .HasConstraintName("fk_avis_film");
 
-                entity.HasOne(d => d.UtilisateurNotant).WithMany(p => p.NotesUtilisateur)
+                entity.HasOne(d => d.UtilisateurNotant)
+                    .WithMany(p => p.NotesUtilisateur)
+                    .HasForeignKey(d => d.UtilisateurId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_notesutilisateur_utilisateur");
+                    .HasConstraintName("fk_avis_utilisateur");
+
             });
 
-           /* modelBuilder.Entity<Film>(entity =>
-            {
-                entity.HasKey(e => e.FilmId).HasName("pk_film2");
-            });*/
-
-
+            /* modelBuilder.Entity<Film>(entity =>
+             {
+                 entity.HasOne(d => d.CategorieNavigation)
+                     .WithMany(p => p.Films)
+                     .HasForeignKey(d => d.Categorie)
+                     .OnDelete(DeleteBehavior.ClientSetNull)
+                     .HasConstraintName("fk_film_categorie");
+             });*/
             modelBuilder.Entity<Utilisateur>(entity =>
             {
                 entity.Property(b => b.Pays).HasDefaultValue("France");
@@ -56,28 +65,11 @@ namespace APIfilms.Models.EntityFramework
                 entity.Property(b => b.DateCreation).HasDefaultValueSql("now()");
 
                 entity.HasIndex(c => c.Mail).IsUnique();
-
             });
-
-            /*modelBuilder.Entity<Notation>(entity =>
+            modelBuilder.Entity<Notation>(entity =>
             {
-                entity.Property(b => b.Note).
+                entity.HasCheckConstraint("CK_Notation_not_note", "not_note between 0 and 5");
 
-            });*/
-
-
-            /*modelBuilder.Entity<Film>(entity =>
-             {
-                 entity.HasKey(e => e.FilmId).HasName("pk_film");
-
-                 entity.HasOne(d => d.NotesFilm).WithMany(p => p.Films)
-                     .OnDelete(DeleteBehavior.ClientSetNull)
-                     .HasConstraintName("fk_film_categorie");
-             });*/
-
-            modelBuilder.Entity<Utilisateur>(entity =>
-            {
-                entity.HasKey(e => e.UtilisateurId).HasName("pk_utilisateur2");
             });
 
             OnModelCreatingPartial(modelBuilder);

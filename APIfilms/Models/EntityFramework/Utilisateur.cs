@@ -7,7 +7,8 @@ using System.Runtime.Intrinsics.X86;
 namespace APIfilms.Models.EntityFramework
 {
     //[PrimaryKey("NotesFilm")]
-    [Table("T_E_UTILISATEUR_UTL")]
+   
+    [Table("t_e_utilisateur_utl")]
     public partial class Utilisateur
     {
         private int utl_id;
@@ -25,7 +26,7 @@ namespace APIfilms.Models.EntityFramework
         private DateTime utl_datecreation;
 
         [InverseProperty("UtilisateurNotant")]
-        public virtual ICollection<Notation> NotesUtilisateur { get; set; } = null!;
+        public virtual ICollection<Notation> NotesUtilisateur { get; set; } = new List<Notation>();
 
         [Key]
         [Column("utl_id")]

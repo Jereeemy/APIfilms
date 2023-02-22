@@ -6,15 +6,16 @@ namespace APIfilms.Models.EntityFramework
 {
 
     //[PrimaryKey("NotesFilm")]
-    [Table("T_E_FILM_FLM")]
+    
+    [Table("t_e_film_flm")]
     public partial class Film
     {
         private int flm_id;
-        private string flm_titre;
-        private string flm_resume;
-        private DateTime flm_datesortie;
-        private double flm_duree;
-        private string flm_genre;
+        private string? flm_titre;
+        private string? flm_resume;
+        private DateTime? flm_datesortie;
+        private double? flm_duree;
+        private string? flm_genre;
 
         [InverseProperty("FilmNote")]
         public virtual ICollection<Notation> NotesFilm { get; set; } = null!;
@@ -39,7 +40,7 @@ namespace APIfilms.Models.EntityFramework
         [Column("flm_titre")]
         [StringLength(100)]
         [Required]
-        public string Titre
+        public string? Titre
         {
             get
             {
@@ -53,9 +54,9 @@ namespace APIfilms.Models.EntityFramework
         }
 
         
-        [Column("flm_resume")]
+        [Column("flm_resume", TypeName = "text")]
 
-        public string Resume
+        public string? Resume
         {
             get
             {
@@ -71,7 +72,7 @@ namespace APIfilms.Models.EntityFramework
         
         [Column("flm_datesortie", TypeName = "date")]
         
-        public DateTime DateSortie
+        public DateTime? DateSortie
         {
             get
             {
@@ -87,7 +88,7 @@ namespace APIfilms.Models.EntityFramework
        
         [Column("flm_duree", TypeName = "numeric(3,0)")]
         
-        public double Duree
+        public double? Duree
         {
             get
             {
@@ -104,7 +105,7 @@ namespace APIfilms.Models.EntityFramework
         [Column("flm_genre")]
         [StringLength(30)]
 
-        public string Genre
+        public string? Genre
         {
             get
             {
