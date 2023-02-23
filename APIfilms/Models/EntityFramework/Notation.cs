@@ -73,6 +73,21 @@ namespace APIfilms.Models.EntityFramework
                 not_note = value;
             }
         }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Notation notation &&
+                   EqualityComparer<Film>.Default.Equals(this.FilmNote, notation.FilmNote) &&
+                   EqualityComparer<Utilisateur>.Default.Equals(this.UtilisateurNotant, notation.UtilisateurNotant) &&
+                   this.UtilisateurId == notation.UtilisateurId &&
+                   this.FilmId == notation.FilmId &&
+                   this.Note == notation.Note;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(this.FilmNote, this.UtilisateurNotant, this.UtilisateurId, this.FilmId, this.Note);
+        }
         //partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
     }

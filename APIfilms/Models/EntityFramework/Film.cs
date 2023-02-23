@@ -17,6 +17,8 @@ namespace APIfilms.Models.EntityFramework
         private double? flm_duree;
         private string? flm_genre;
 
+      
+
         [InverseProperty("FilmNote")]
         public virtual ICollection<Notation> NotesFilm { get; set; } = null!;
 
@@ -116,6 +118,23 @@ namespace APIfilms.Models.EntityFramework
             {
                 flm_genre = value;
             }
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Film film &&
+                   EqualityComparer<ICollection<Notation>>.Default.Equals(this.NotesFilm, film.NotesFilm) &&
+                   this.FilmId == film.FilmId &&
+                   this.Titre == film.Titre &&
+                   this.Resume == film.Resume &&
+                   this.DateSortie == film.DateSortie &&
+                   this.Duree == film.Duree &&
+                   this.Genre == film.Genre;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(this.NotesFilm, this.FilmId, this.Titre, this.Resume, this.DateSortie, this.Duree, this.Genre);
         }
 
         //partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

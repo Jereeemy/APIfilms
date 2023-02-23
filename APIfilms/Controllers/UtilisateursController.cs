@@ -43,6 +43,7 @@ namespace APIfilms.Controllers
             return utilisateur;
         }
 
+        
         // PUT: api/Utilisateurs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -82,7 +83,7 @@ namespace APIfilms.Controllers
             _context.Utilisateurs.Add(utilisateur);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUtilisateur", new { id = utilisateur.UtilisateurId }, utilisateur);
+            return CreatedAtAction("GetUtilisateurs", new { id = utilisateur.UtilisateurId }, utilisateur);
         }
 
         // DELETE: api/Utilisateurs/5
