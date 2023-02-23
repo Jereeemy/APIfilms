@@ -160,7 +160,7 @@ namespace APIfilms.Controllers.Tests
 
             var result = controller.PutUtilisateur(10,userAtester).Result;
 
-            Utilisateur? userRecupere = _context.Utilisateurs.Where(u => u.Mail.ToUpper() == userAtester.Mail.ToUpper()).FirstOrDefault();
+            Utilisateur? userRecupere = _context.Utilisateurs.Where(u => u.UtilisateurId == userAtester.UtilisateurId).FirstOrDefault();
             Assert.AreEqual(userRecupere, userAtester, "Utilisateurs pas identiques");
         }
 
