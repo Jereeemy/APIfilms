@@ -25,8 +25,62 @@ namespace APIfilms.Models.EntityFramework
         private float? utl_longitude;
         private DateTime utl_datecreation;
 
-       
+        // avec tout
+        public Utilisateur(ICollection<Notation> notesUtilisateur, int utilisateurId, string? nom, string? prenom, string? mobile, string mail, string? pwd, string? rue, string? codePostal, string? ville, string? pays, float? latitude, float? longitude, DateTime dateCreation)
+        {
+            this.NotesUtilisateur = notesUtilisateur;
+            this.UtilisateurId = utilisateurId;
+            this.Nom = nom;
+            this.Prenom = prenom;
+            this.Mobile = mobile;
+            this.Mail = mail;
+            this.Pwd = pwd;
+            this.Rue = rue;
+            this.CodePostal = codePostal;
+            this.Ville = ville;
+            this.Pays = pays;
+            this.Latitude = latitude;
+            this.Longitude = longitude;
+            this.DateCreation = dateCreation;
+        }
 
+        // sans l'id
+        public Utilisateur(ICollection<Notation> notesUtilisateur, string? nom, string? prenom, string? mobile, string mail, string? pwd, string? rue, string? codePostal, string? ville, string? pays, float? latitude, float? longitude, DateTime dateCreation)
+        {
+            this.NotesUtilisateur = notesUtilisateur;
+            //this.UtilisateurId = utilisateurId;
+            this.Nom = nom;
+            this.Prenom = prenom;
+            this.Mobile = mobile;
+            this.Mail = mail;
+            this.Pwd = pwd;
+            this.Rue = rue;
+            this.CodePostal = codePostal;
+            this.Ville = ville;
+            this.Pays = pays;
+            this.Latitude = latitude;
+            this.Longitude = longitude;
+            this.DateCreation = dateCreation;
+        }
+        public Utilisateur() { }
+        // sans la note
+        public Utilisateur(int utilisateurId, string? nom, string? prenom, string? mobile, string mail, string? pwd, string? rue, string? codePostal, string? ville, string? pays, float? latitude, float? longitude, DateTime dateCreation)
+        {
+            //this.NotesUtilisateur = notesUtilisateur;
+            this.UtilisateurId = utilisateurId;
+            this.Nom = nom;
+            this.Prenom = prenom;
+            this.Mobile = mobile;
+            this.Mail = mail;
+            this.Pwd = pwd;
+            this.Rue = rue;
+            this.CodePostal = codePostal;
+            this.Ville = ville;
+            this.Pays = pays;
+            this.Latitude = latitude;
+            this.Longitude = longitude;
+            this.DateCreation = dateCreation;
+        }
 
         [InverseProperty("UtilisateurNotant")]
         public virtual ICollection<Notation> NotesUtilisateur { get; set; } = new List<Notation>();
@@ -243,7 +297,6 @@ namespace APIfilms.Models.EntityFramework
         public override bool Equals(object? obj)
         {
             return obj is Utilisateur utilisateur &&
-                   EqualityComparer<ICollection<Notation>>.Default.Equals(this.NotesUtilisateur, utilisateur.NotesUtilisateur) &&
                    this.UtilisateurId == utilisateur.UtilisateurId &&
                    this.Nom == utilisateur.Nom &&
                    this.Prenom == utilisateur.Prenom &&
@@ -262,7 +315,6 @@ namespace APIfilms.Models.EntityFramework
         public override int GetHashCode()
         {
             HashCode hash = new HashCode();
-            hash.Add(this.NotesUtilisateur);
             hash.Add(this.UtilisateurId);
             hash.Add(this.Nom);
             hash.Add(this.Prenom);

@@ -23,6 +23,7 @@ namespace APIfilms.Controllers
 
         // GET: api/Utilisateurs
         [HttpGet]
+        [ProducesResponseType(200)]
         public async Task<ActionResult<IEnumerable<Utilisateur>>> GetUtilisateurs()
         {
             return await _context.Utilisateurs.ToListAsync();
@@ -30,6 +31,7 @@ namespace APIfilms.Controllers
 
         // GET: api/Utilisateurs/5
         [HttpGet("{id}")]
+        [ProducesResponseType(200)]
         [ActionName("GetUtilisateurById")]
         public async Task<ActionResult<Utilisateur>> GetUtilisateurById(int id)
         {
@@ -47,6 +49,8 @@ namespace APIfilms.Controllers
         // PUT: api/Utilisateurs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> PutUtilisateur(int id, Utilisateur utilisateur)
         {
             if (id != utilisateur.UtilisateurId)
@@ -78,6 +82,7 @@ namespace APIfilms.Controllers
         // POST: api/Utilisateurs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [ProducesResponseType(200)]
         public async Task<ActionResult<Utilisateur>> PostUtilisateur(Utilisateur utilisateur)
         {
             _context.Utilisateurs.Add(utilisateur);
@@ -88,6 +93,7 @@ namespace APIfilms.Controllers
 
         // DELETE: api/Utilisateurs/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(200)]
         public async Task<IActionResult> DeleteUtilisateur(int id)
         {
             var utilisateur = await _context.Utilisateurs.FindAsync(id);
@@ -108,6 +114,8 @@ namespace APIfilms.Controllers
         }
 
         [HttpGet("{email}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         [ActionName("GetUtilisateurByEmail")]
         public async Task<ActionResult<Utilisateur>> GetUtilisateurByEmail(string email)
         {
