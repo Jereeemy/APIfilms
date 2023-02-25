@@ -1,4 +1,6 @@
+using APIfilms.Models.DataManager;
 using APIfilms.Models.EntityFramework;
+using APIfilms.Models.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace APIfilms
@@ -26,6 +28,8 @@ namespace APIfilms
                 }
                 
                 );
+
+            builder.Services.AddScoped<IDataRepository<Utilisateur>, UtilisateurManager>();
 
             var app = builder.Build();
 

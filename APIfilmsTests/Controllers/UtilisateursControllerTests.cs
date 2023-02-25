@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using APIfilms.Models.DataManager;
+using APIfilms.Models.Repository;
 
 namespace APIfilms.Controllers.Tests
 {
@@ -18,19 +20,28 @@ namespace APIfilms.Controllers.Tests
     public class UtilisateursControllerTests
     {
 
+        private UtilisateursController controller;
+        private FilmRatingsDBContext context;
+        private IDataRepository<Utilisateur> dataRepository;
         UtilisateursController utilisateurController;
-        [TestMethod()]
-        public void UtilisateursControllerTest()
-        {
 
+        
+        public UtilisateursControllerTests()
+        {
+            var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
+            context = new FilmRatingsDBContext(builder.Options);
+            dataRepository = new UtilisateurManager(context);
+            controller = new UtilisateursController(dataRepository);
         }
+        
 
         [TestMethod()]
         public void GetUtilisateursTest()
         {
             var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            FilmRatingsDBContext _context = new FilmRatingsDBContext(builder.Options);
-            UtilisateursController controller = new UtilisateursController(_context);
+            context = new FilmRatingsDBContext(builder.Options);
+            dataRepository = new UtilisateurManager(context);
+            controller = new UtilisateursController(dataRepository);
 
             var result = controller.GetUtilisateurs().Result.Value;
 
@@ -48,8 +59,9 @@ namespace APIfilms.Controllers.Tests
         public void GetUtilisateurByIdTest()
         {
             var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            FilmRatingsDBContext _context = new FilmRatingsDBContext(builder.Options);
-            UtilisateursController controller = new UtilisateursController(_context);
+            context = new FilmRatingsDBContext(builder.Options);
+            dataRepository = new UtilisateurManager(context);
+            controller = new UtilisateursController(dataRepository);
 
             //Act
             var result1 = controller.GetUtilisateurById(2);
@@ -74,8 +86,9 @@ namespace APIfilms.Controllers.Tests
         public void GetUtilisateurByIdTest_NotFound()
         {
             var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            FilmRatingsDBContext _context = new FilmRatingsDBContext(builder.Options);
-            UtilisateursController controller = new UtilisateursController(_context);
+            context = new FilmRatingsDBContext(builder.Options);
+            dataRepository = new UtilisateurManager(context);
+            controller = new UtilisateursController(dataRepository);
 
             Utilisateur u1 = new Utilisateur(new List<Notation>(), 1, "Calida", "Lilley", "0653930778", "clilleymd@last.fm", "Toto12345678!", "Impasse des bergeronnettes", "74200", "Allinges", "France", (float)46.344795, (float)6.4885845, new DateTime(2023, 02, 24));
             var result1 = controller.GetUtilisateurById(100);
@@ -93,8 +106,9 @@ namespace APIfilms.Controllers.Tests
         public void GetUtilisateurByEmailTest()
         {
             var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            FilmRatingsDBContext _context = new FilmRatingsDBContext(builder.Options);
-            UtilisateursController controller = new UtilisateursController(_context);
+            context = new FilmRatingsDBContext(builder.Options);
+            dataRepository = new UtilisateurManager(context);
+            controller = new UtilisateursController(dataRepository);
 
             //Act
             var result1 = controller.GetUtilisateurByEmail("gdominguez0@washingtonpost.com");
@@ -113,8 +127,9 @@ namespace APIfilms.Controllers.Tests
         public void GetUtilisateurByEmail_NotFound()
         {
             var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            FilmRatingsDBContext _context = new FilmRatingsDBContext(builder.Options);
-            UtilisateursController controller = new UtilisateursController(_context);
+            context = new FilmRatingsDBContext(builder.Options);
+            dataRepository = new UtilisateurManager(context);
+            controller = new UtilisateursController(dataRepository);
 
             //Act
             var result1 = controller.GetUtilisateurByEmail("aaaa");
@@ -135,8 +150,9 @@ namespace APIfilms.Controllers.Tests
         public void PutUtilisateurTest()
         {
             var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            FilmRatingsDBContext _context = new FilmRatingsDBContext(builder.Options);
-            UtilisateursController controller = new UtilisateursController(_context);
+            context = new FilmRatingsDBContext(builder.Options);
+            dataRepository = new UtilisateurManager(context);
+            controller = new UtilisateursController(dataRepository);
 
             // Arrange
             Random rnd = new Random();
@@ -160,7 +176,7 @@ namespace APIfilms.Controllers.Tests
 
             var result = controller.PutUtilisateur(10, userAtester).Result;
 
-            Utilisateur? userRecupere = _context.Utilisateurs.Where(u => u.UtilisateurId == userAtester.UtilisateurId).FirstOrDefault();
+            Utilisateur? userRecupere = context.Utilisateurs.Where(u => u.UtilisateurId == userAtester.UtilisateurId).FirstOrDefault();
             Assert.AreEqual(userRecupere, userAtester, "Utilisateurs pas identiques");
 
 
@@ -173,8 +189,9 @@ namespace APIfilms.Controllers.Tests
         {
 
             var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            FilmRatingsDBContext _context = new FilmRatingsDBContext(builder.Options);
-            UtilisateursController controller = new UtilisateursController(_context);
+            context = new FilmRatingsDBContext(builder.Options);
+            dataRepository = new UtilisateurManager(context);
+            controller = new UtilisateursController(dataRepository);
 
             // Arrange
             Random rnd = new Random();
@@ -198,7 +215,7 @@ namespace APIfilms.Controllers.Tests
             // Act
             var result = controller.PostUtilisateur(userAtester).Result;
 
-            Utilisateur? userRecupere = _context.Utilisateurs.Where(u => u.Mail.ToUpper() == userAtester.Mail.ToUpper()).FirstOrDefault(); // On récupère l'utilisateur créé directement dans la BD grace à son mail
+            Utilisateur? userRecupere = context.Utilisateurs.Where(u => u.Mail.ToUpper() == userAtester.Mail.ToUpper()).FirstOrDefault(); // On récupère l'utilisateur créé directement dans la BD grace à son mail
 
             userAtester.UtilisateurId = userRecupere.UtilisateurId;
             Assert.AreEqual(userRecupere, userAtester, "Utilisateurs pas identiques");
@@ -214,8 +231,9 @@ namespace APIfilms.Controllers.Tests
         {
 
             var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            FilmRatingsDBContext _context = new FilmRatingsDBContext(builder.Options);
-            UtilisateursController controller = new UtilisateursController(_context);
+            context = new FilmRatingsDBContext(builder.Options);
+            dataRepository = new UtilisateurManager(context);
+            controller = new UtilisateursController(dataRepository);
 
             // Arrange
             Random rnd = new Random();
@@ -246,7 +264,7 @@ namespace APIfilms.Controllers.Tests
             // Act
             var result = controller.PostUtilisateur(userAtester).Result;
 
-            Utilisateur? userRecupere = _context.Utilisateurs.Where(u => u.Mail.ToUpper() == userAtester.Mail.ToUpper()).FirstOrDefault(); // On récupère l'utilisateur créé directement dans la BD grace à son mail
+            Utilisateur? userRecupere = context.Utilisateurs.Where(u => u.Mobile == userAtester.Mobile).FirstOrDefault(); // On récupère l'utilisateur créé directement dans la BD grace à son mail
 
             userAtester.UtilisateurId = userRecupere.UtilisateurId;
             Assert.AreEqual(userRecupere, userAtester, "Utilisateurs pas identiques");
@@ -260,8 +278,9 @@ namespace APIfilms.Controllers.Tests
         public void DeleteUtilisateurTest()
         {
             var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            FilmRatingsDBContext _context = new FilmRatingsDBContext(builder.Options);
-            UtilisateursController controller = new UtilisateursController(_context);
+            context = new FilmRatingsDBContext(builder.Options);
+            dataRepository = new UtilisateurManager(context);
+            controller = new UtilisateursController(dataRepository);
 
             // Arrange
             Random rnd = new Random();
@@ -287,7 +306,7 @@ namespace APIfilms.Controllers.Tests
            
             var result = controller.DeleteUtilisateur(userAtester.UtilisateurId).Result;
 
-            Utilisateur? userRecupere = _context.Utilisateurs.Where(u => u.UtilisateurId == userAtester.UtilisateurId).FirstOrDefault();
+            Utilisateur? userRecupere = context.Utilisateurs.Where(u => u.UtilisateurId == userAtester.UtilisateurId).FirstOrDefault();
             Assert.AreNotEqual(userRecupere, userAtester, "Utilisateurs identiques");
 
 
