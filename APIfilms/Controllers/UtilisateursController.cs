@@ -21,6 +21,14 @@ namespace APIfilms.Controllers
             _context = context;
         }
 
+
+        
+        /// <summary>
+        /// Get a many currency.
+        /// </summary>
+        /// <returns>Http response</returns>
+        /// <response code="200">When the all user is found</response>
+
         // GET: api/Utilisateurs
         [HttpGet]
         [ProducesResponseType(200)]
@@ -29,9 +37,18 @@ namespace APIfilms.Controllers
             return await _context.Utilisateurs.ToListAsync();
         }
 
+
+        /// <summary>
+        /// Get a single currency.
+        /// </summary>
+        /// <returns>Http response</returns>
+        /// <response code="200">When the currency user is found</response>
+        /// <response code="404">When the currency user is not found</response>
+
         // GET: api/Utilisateurs/5
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         [ActionName("GetUtilisateurById")]
         public async Task<ActionResult<Utilisateur>> GetUtilisateurById(int id)
         {
@@ -45,7 +62,14 @@ namespace APIfilms.Controllers
             return utilisateur;
         }
 
-        
+
+        /// <summary>
+        /// Get a single currency.
+        /// </summary>
+        /// <returns>Http response</returns>
+        /// <response code="200">When the user is modify</response>
+        /// <response code="400">When the user is not found</response>
+
         // PUT: api/Utilisateurs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -79,10 +103,19 @@ namespace APIfilms.Controllers
             return NoContent();
         }
 
+
+        /// <summary>
+        /// Get a single currency.
+        /// </summary>
+        /// <returns>Http response</returns>
+        /// <response code="200">When the currency user is add</response>
+        
+
         // POST: api/Utilisateurs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [ProducesResponseType(200)]
+        
         public async Task<ActionResult<Utilisateur>> PostUtilisateur(Utilisateur utilisateur)
         {
             _context.Utilisateurs.Add(utilisateur);
@@ -91,9 +124,17 @@ namespace APIfilms.Controllers
             return CreatedAtAction("GetUtilisateurs", new { id = utilisateur.UtilisateurId }, utilisateur);
         }
 
+        /// <summary>
+        /// Get a single currency.
+        /// </summary>
+        /// <returns>Http response</returns>
+        /// <response code="200">When the user is delete</response>
+        /// <response code="404">When the user is not found</response>
+
         // DELETE: api/Utilisateurs/5
         [HttpDelete("{id}")]
         [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> DeleteUtilisateur(int id)
         {
             var utilisateur = await _context.Utilisateurs.FindAsync(id);
@@ -112,6 +153,16 @@ namespace APIfilms.Controllers
         {
             return _context.Utilisateurs.Any(e => e.UtilisateurId == id);
         }
+
+
+
+        /// <summary>
+        /// Get a single currency.
+        /// </summary>
+        /// <returns>Http response</returns>
+        /// <response code="200">When the user is find with mail</response>
+        /// <response code="404">When the mail is not found</response>
+
 
         [HttpGet("{email}")]
         [ProducesResponseType(200)]

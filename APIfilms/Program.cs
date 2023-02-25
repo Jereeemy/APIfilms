@@ -17,7 +17,15 @@ namespace APIfilms
 
             builder.Services.AddDbContext<FilmRatingsDBContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("FilmRatingsDBContext")));
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(
+                doc =>
+                {
+                    var xmlFile = Path.ChangeExtension(typeof(Program).Assembly.Location, "xml");
+                    doc.IncludeXmlComments(xmlFile);
+
+                }
+                
+                );
 
             var app = builder.Build();
 
