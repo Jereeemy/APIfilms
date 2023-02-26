@@ -7,9 +7,9 @@ using System.Runtime.Intrinsics.X86;
 namespace APIfilms.Models.EntityFramework
 {
     //[PrimaryKey("NotesFilm")]
-   
+
     [Table("t_e_utilisateur_utl")]
-    public partial class Utilisateur
+    public class Utilisateur
     {
         private int utl_id;
         private string? utl_nom;
@@ -82,12 +82,11 @@ namespace APIfilms.Models.EntityFramework
             this.DateCreation = dateCreation;
         }
 
-        [InverseProperty("UtilisateurNotant")]
+        [InverseProperty(nameof(Notation.UtilisateurNotant))]
         public virtual ICollection<Notation> NotesUtilisateur { get; set; } = new List<Notation>();
 
         [Key]
         [Column("utl_id")]
-
         public int UtilisateurId
         {
             get
@@ -101,10 +100,8 @@ namespace APIfilms.Models.EntityFramework
             }
         }
 
-        
         [Column("utl_nom")]
         [StringLength(50)]
-
         public string? Nom
         {
             get
@@ -118,10 +115,8 @@ namespace APIfilms.Models.EntityFramework
             }
         }
 
-        
         [Column("utl_prenom")]
         [StringLength(50)]
-
         public string? Prenom
         {
             get
@@ -135,9 +130,8 @@ namespace APIfilms.Models.EntityFramework
             }
         }
 
-        
         [Column("utl_mobile", TypeName = "char(10)")]
-
+        [RegularExpression(@"^0[0-9]{9}$", ErrorMessage = "Numéro e téléphone non valide")]
         public string? Mobile
         {
             get
@@ -151,20 +145,27 @@ namespace APIfilms.Models.EntityFramework
             }
         }
 
-
-        [Required]
         [Column("utl_mail")]
+        [Required]
         [EmailAddress]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "La longueur d’un email doit être comprise entre 6 et 100 caractères.")]
-        public string Mail { get; set; } = null!;
-    
-        
+        public string? Mail
+        {
+            get
+            {
+                return utl_mail;
+            }
 
-        
+            set
+            {
+                utl_mail = value;
+            }
+        }
+
         [Column("utl_pwd")]
         [StringLength(64)]
+        //[RegularExpression(@" ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", ErrorMessage = "Mot de passe non valide")]
         [Required]
-
         public string? Pwd
         {
             get
@@ -178,11 +179,8 @@ namespace APIfilms.Models.EntityFramework
             }
         }
 
-        
         [Column("utl_rue")]
         [StringLength(200)]
-        
-
         public string? Rue
         {
             get
@@ -196,9 +194,8 @@ namespace APIfilms.Models.EntityFramework
             }
         }
 
-        
-        [Column("utl_cp",TypeName = "char(5)")]
-
+        [Column("utl_cp", TypeName = "char(5)")]
+        [MinLength(5)]
         public string? CodePostal
         {
             get
@@ -212,10 +209,8 @@ namespace APIfilms.Models.EntityFramework
             }
         }
 
-        
         [Column("utl_ville")]
         [StringLength(50)]
-
         public string? Ville
         {
             get
@@ -229,11 +224,9 @@ namespace APIfilms.Models.EntityFramework
             }
         }
 
-        
         [Column("utl_pays")]
         [StringLength(50)]
         [DefaultValue("France")]
-
         public string? Pays
         {
             get
@@ -247,7 +240,6 @@ namespace APIfilms.Models.EntityFramework
             }
         }
 
-       
         [Column("utl_latitude")]
         public float? Latitude
         {
@@ -262,7 +254,6 @@ namespace APIfilms.Models.EntityFramework
             }
         }
 
-        
         [Column("utl_longitude")]
         public float? Longitude
         {
@@ -277,8 +268,7 @@ namespace APIfilms.Models.EntityFramework
             }
         }
 
-        
-        [Column("utl_datecreation", TypeName ="date")]
+        [Column("utl_datecreation", TypeName = "date")]
         [DefaultValue("now()")]
         [Required]
         public DateTime DateCreation
@@ -315,6 +305,7 @@ namespace APIfilms.Models.EntityFramework
         public override int GetHashCode()
         {
             HashCode hash = new HashCode();
+            hash.Add(this.NotesUtilisateur);
             hash.Add(this.UtilisateurId);
             hash.Add(this.Nom);
             hash.Add(this.Prenom);
@@ -330,7 +321,5 @@ namespace APIfilms.Models.EntityFramework
             hash.Add(this.DateCreation);
             return hash.ToHashCode();
         }
-
-        //partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

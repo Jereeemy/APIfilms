@@ -5,10 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace APIfilms.Models.EntityFramework
 {
 
-    //[PrimaryKey("NotesFilm")]
-    
     [Table("t_e_film_flm")]
-    public partial class Film
+    public class Film
     {
         private int flm_id;
         private string? flm_titre;
@@ -17,14 +15,12 @@ namespace APIfilms.Models.EntityFramework
         private double? flm_duree;
         private string? flm_genre;
 
-      
-
-        [InverseProperty("FilmNote")]
-        public virtual ICollection<Notation> NotesFilm { get; set; } = null!;
+        [InverseProperty(nameof(Notation.FilmNote))]
+        public virtual ICollection<Notation> NotesFilm { get; set; } = new List<Notation>();
 
         [Key]
         [Column("flm_id")]
-
+        [Required]
         public int FilmId
         {
             get
@@ -38,7 +34,6 @@ namespace APIfilms.Models.EntityFramework
             }
         }
 
-        
         [Column("flm_titre")]
         [StringLength(100)]
         [Required]
@@ -55,9 +50,7 @@ namespace APIfilms.Models.EntityFramework
             }
         }
 
-        
         [Column("flm_resume", TypeName = "text")]
-
         public string? Resume
         {
             get
@@ -71,9 +64,7 @@ namespace APIfilms.Models.EntityFramework
             }
         }
 
-        
         [Column("flm_datesortie", TypeName = "date")]
-        
         public DateTime? DateSortie
         {
             get
@@ -87,9 +78,7 @@ namespace APIfilms.Models.EntityFramework
             }
         }
 
-       
         [Column("flm_duree", TypeName = "numeric(3,0)")]
-        
         public double? Duree
         {
             get
@@ -103,10 +92,8 @@ namespace APIfilms.Models.EntityFramework
             }
         }
 
-        
         [Column("flm_genre")]
         [StringLength(30)]
-
         public string? Genre
         {
             get
@@ -136,7 +123,5 @@ namespace APIfilms.Models.EntityFramework
         {
             return HashCode.Combine(this.NotesFilm, this.FilmId, this.Titre, this.Resume, this.DateSortie, this.Duree, this.Genre);
         }
-
-        //partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

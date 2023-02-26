@@ -17,6 +17,7 @@ namespace APIfilms.Models.DataManager
         {
             return filmsDbContext.Utilisateurs.ToList();
         }
+ 
         //public ActionResult<Utilisateur> GetById(int id)
         public async Task<ActionResult<Utilisateur>> GetByIdAsync(int id)
         {
@@ -28,36 +29,13 @@ namespace APIfilms.Models.DataManager
         }
 
 
-        public void Add(Utilisateur entity)
+        /*public void Add(Utilisateur entity)
         {
             filmsDbContext.Utilisateurs.Add(entity);
             filmsDbContext.SaveChanges();
-        }
+        }*/
 
-        /* public async Task AddAsync(Utilisateur entity)
-         {
-             await filmsDbContext.Utilisateurs.AddAsync(entity);
-             await filmsDbContext.SaveChangesAsync();
-         }*/
-        /* public async Task UpdateAsync(Utilisateur utilisateur, Utilisateur entity)
-         {
-             filmsDbContext.Entry(utilisateur).State = EntityState.Modified;
-             utilisateur.UtilisateurId = entity.UtilisateurId;
-             utilisateur.Nom = entity.Nom;
-             utilisateur.Prenom = entity.Prenom;
-             utilisateur.Mail = entity.Mail;
-             utilisateur.Rue = entity.Rue;
-             utilisateur.CodePostal = entity.CodePostal;
-             utilisateur.Ville = entity.Ville;
-             utilisateur.Pays = entity.Pays;
-             utilisateur.Latitude = entity.Latitude;
-             utilisateur.Longitude = entity.Longitude;
-             utilisateur.Pwd = entity.Pwd;
-             utilisateur.Mobile = entity.Mobile;
-             utilisateur.NotesUtilisateur = entity.NotesUtilisateur;
-             await filmsDbContext.SaveChangesAsync();
-         }*/
-        public void Update(Utilisateur utilisateur, Utilisateur entity)
+        /* public void Update(Utilisateur utilisateur, Utilisateur entity)
         {
             filmsDbContext.Entry(utilisateur).State = EntityState.Modified;
             utilisateur.UtilisateurId = entity.UtilisateurId;
@@ -74,12 +52,44 @@ namespace APIfilms.Models.DataManager
             utilisateur.Mobile = entity.Mobile;
             utilisateur.NotesUtilisateur = entity.NotesUtilisateur;
             filmsDbContext.SaveChanges();
-        }
-        public void Delete(Utilisateur utilisateur)
+        }*/
+        /*public void Delete(Utilisateur utilisateur)
         {
             filmsDbContext.Utilisateurs.Remove(utilisateur);
             filmsDbContext.SaveChanges();
 
+        }*/
+
+
+        public async Task UpdateAsync(Utilisateur utilisateur, Utilisateur entity)
+        {
+            filmsDbContext.Entry(utilisateur).State = EntityState.Modified;
+            utilisateur.UtilisateurId = entity.UtilisateurId;
+            utilisateur.Nom = entity.Nom;
+            utilisateur.Prenom = entity.Prenom;
+            utilisateur.Mail = entity.Mail;
+            utilisateur.Rue = entity.Rue;
+            utilisateur.CodePostal = entity.CodePostal;
+            utilisateur.Ville = entity.Ville;
+            utilisateur.Pays = entity.Pays;
+            utilisateur.Latitude = entity.Latitude;
+            utilisateur.Longitude = entity.Longitude;
+            utilisateur.Pwd = entity.Pwd;
+            utilisateur.Mobile = entity.Mobile;
+            utilisateur.NotesUtilisateur = entity.NotesUtilisateur;
+            await filmsDbContext.SaveChangesAsync();
+        }
+       
+
+        public async Task DeleteAsync(Utilisateur utilisateur)
+        {
+            filmsDbContext.Utilisateurs.Remove(utilisateur);
+            await filmsDbContext.SaveChangesAsync();
+        }
+        public async Task AddAsync(Utilisateur entity)
+        {
+            await filmsDbContext.Utilisateurs.AddAsync(entity);
+            await filmsDbContext.SaveChangesAsync();
         }
     }
-   }
+}

@@ -5,16 +5,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace APIfilms.Models.EntityFramework
 {
     //[PrimaryKey("FilmNote,UtilisateurNotant")]
-    
+
     [Table("t_j_notation_not")]
-    public partial class Notation
+    public class Notation
     {
         private int utl_id;
         private int? flm_id;
         private int? not_note;
 
-
-        [ForeignKey("FilmId")]
+        [ForeignKey("FilmId")]//récupère l'ID de l'autre table
         [InverseProperty("NotesFilm")]
         public virtual Film FilmNote { get; set; } = null!;
 
@@ -22,10 +21,9 @@ namespace APIfilms.Models.EntityFramework
         [InverseProperty("NotesUtilisateur")]
         public virtual Utilisateur UtilisateurNotant { get; set; } = null!;
 
-
         [Key]
+        [ForeignKey("utilisateur")]
         [Column("utl_id")]
-        [ForeignKey("Utilisateur")]
         public int UtilisateurId
         {
             get
@@ -40,9 +38,8 @@ namespace APIfilms.Models.EntityFramework
         }
 
         [Key]
+        [ForeignKey("film")]
         [Column("flm_id")]
-        [ForeignKey("Film")]
-
         public int? FilmId
         {
             get
@@ -56,11 +53,9 @@ namespace APIfilms.Models.EntityFramework
             }
         }
 
-            
         [Column("not_note")]
-        /*[Range(0,5)]*/
+        [Range(0, 5)]
         [Required]
-
         public int? Note
         {
             get
@@ -88,7 +83,5 @@ namespace APIfilms.Models.EntityFramework
         {
             return HashCode.Combine(this.FilmNote, this.UtilisateurNotant, this.UtilisateurId, this.FilmId, this.Note);
         }
-        //partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
     }
 }

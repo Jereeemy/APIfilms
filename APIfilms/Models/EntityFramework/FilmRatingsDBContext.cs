@@ -8,7 +8,7 @@ namespace APIfilms.Models.EntityFramework
 {
     public partial class FilmRatingsDBContext : DbContext
     {
-       public FilmRatingsDBContext()
+        public FilmRatingsDBContext()
         {
         }
 
@@ -23,10 +23,10 @@ namespace APIfilms.Models.EntityFramework
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            /*if (!optionsBuilder.IsConfigured)
+            if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseNpgsql("Server=localhost;port=5432;Database=FilmsDB; uid=postgres;password=postgres;");
-            }*/
+                /*optionsBuilder.UseNpgsql("Server=localhost;port=5432;Database=FilmsDB; uid=postgres;password=postgres;");*/
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -47,7 +47,6 @@ namespace APIfilms.Models.EntityFramework
                     .HasForeignKey(d => d.UtilisateurId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_avis_utilisateur");
-
             });
 
             /* modelBuilder.Entity<Film>(entity =>

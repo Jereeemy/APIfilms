@@ -16,7 +16,7 @@ namespace APIfilms.Controllers
     [ApiController]
     public class UtilisateursController : ControllerBase
     {
-        private readonly FilmRatingsDBContext _context;
+       // private readonly FilmRatingsDBContext _context;
         private readonly IDataRepository<Utilisateur> dataRepository;
 
         public UtilisateursController(IDataRepository<Utilisateur> dataRepo)
@@ -95,7 +95,7 @@ namespace APIfilms.Controllers
             }
             else
             {
-                dataRepository.Update(userToUpdate.Value, utilisateur);
+                await dataRepository.UpdateAsync(userToUpdate.Value, utilisateur);
                 return NoContent();
             }
         }
@@ -119,7 +119,7 @@ namespace APIfilms.Controllers
             {
                 return BadRequest(ModelState);
             }
-            dataRepository.Add(utilisateur);
+            await dataRepository.AddAsync(utilisateur);
             return CreatedAtAction("GetById", new { id = utilisateur.UtilisateurId }, utilisateur); // GetById : nom de l’action
         }
 
@@ -142,7 +142,7 @@ namespace APIfilms.Controllers
                 return NotFound();
                 
             }
-            dataRepository.Delete(utilisateur.Value);
+            await dataRepository.DeleteAsync(utilisateur.Value);
             return NoContent();
         }
 
