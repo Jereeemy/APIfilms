@@ -47,6 +47,7 @@ namespace APIfilms.Models.EntityFramework
                     .HasForeignKey(d => d.UtilisateurId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_avis_utilisateur");
+
             });
 
             /* modelBuilder.Entity<Film>(entity =>
