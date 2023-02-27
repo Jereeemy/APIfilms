@@ -64,10 +64,26 @@ namespace APIfilms.Models.EntityFramework
                 entity.Property(b => b.DateCreation).HasDefaultValueSql("now()");
 
                 entity.HasIndex(c => c.Mail).IsUnique();
+
+                /*entity.Property(b => b.Mobile).HasMaxLength(10).IsFixedLength();
+
+                entity.Property(b => b.CodePostal).HasMaxLength(5).IsFixedLength();
+
+                entity.Property(b => b.DateCreation).HasColumnType("date");*/
             });
             modelBuilder.Entity<Notation>(entity =>
             {
                 entity.HasCheckConstraint("CK_Notation_not_note", "not_note between 0 and 5");
+
+            });
+
+            modelBuilder.Entity<Film>(entity =>
+            {
+                entity.HasKey(b => b.FilmId).HasName("pk_flm");
+
+                entity.Property(b => b.Duree).HasColumnType("numeric(3,0)");
+
+                entity.Property(b => b.DateSortie).HasColumnType("date");
 
             });
 

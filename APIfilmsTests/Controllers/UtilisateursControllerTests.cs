@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using APIfilms.Models.DataManager;
 using APIfilms.Models.Repository;
+using Moq;
 
 namespace APIfilms.Controllers.Tests
 {
@@ -45,9 +46,9 @@ namespace APIfilms.Controllers.Tests
 
             var result = controller.GetUtilisateurs().Result.Value;
 
-            Utilisateur u1 = new Utilisateur(new List<Notation>(), 1, "Calida", "Lilley", "0653930778", "clilleymd@last.fm", "Toto12345678!", "Impasse des bergeronnettes", "74200", "Allinges", "France", (float)46.344795, (float)6.4885845, new DateTime(2023, 02, 24));
-            Utilisateur u2 = new Utilisateur(new List<Notation>(), 2, "Gwendolin", "Dominguez", "0724970555", "gdominguez0@washingtonpost.com", "Toto12345678!", "Chemin de gom", "73420", "Voglans", "France", (float)45.622154, (float)5.8853216, new DateTime(2023, 02, 24));
-            Utilisateur u3 = new Utilisateur(new List<Notation>(), 3, "Randolph", "Richings", "0630271158", "rrichings1@naver.com", "Toto12345678!", "Route des charmottes d'en bas", "74890", "Bons-en-Chablais", "France", (float)46.25732, (float)6.367676, new DateTime(2023, 02, 24));
+            Utilisateur u1 = new Utilisateur(new List<Notation>(), 1, "Calida", "Lilley", "0653930778", "clilleymd@last.fm", "Toto12345678!", "Impasse des bergeronnettes", "74200", "Allinges", "France", (float)46.344795, (float)6.4885845, new DateTime(2023, 02, 27));
+            Utilisateur u2 = new Utilisateur(new List<Notation>(), 2, "Gwendolin", "Dominguez", "0724970555", "gdominguez0@washingtonpost.com", "Toto12345678!", "Chemin de gom", "73420", "Voglans", "France", (float)45.622154, (float)5.8853216, new DateTime(2023, 02, 27));
+            Utilisateur u3 = new Utilisateur(new List<Notation>(), 3, "Randolph", "Richings", "0630271158", "rrichings1@naver.com", "Toto12345678!", "Route des charmottes d'en bas", "74890", "Bons-en-Chablais", "France", (float)46.25732, (float)6.367676, new DateTime(2023, 02, 27));
 
 
             List<Utilisateur> listeUtilisateurRecuperees = new List<Utilisateur> { u1, u2, u3 };
@@ -67,7 +68,7 @@ namespace APIfilms.Controllers.Tests
             var result1 = controller.GetUtilisateurById(2);
 
 
-            Utilisateur u2 = new Utilisateur(new List<Notation>(), 2, "Gwendolin", "Dominguez", "0724970555", "gdominguez0@washingtonpost.com", "Toto12345678!", "Chemin de gom", "73420", "Voglans", "France", (float)45.622154, (float)5.8853216, new DateTime(2023, 02, 24));
+            Utilisateur u2 = new Utilisateur(new List<Notation>(), 2, "Gwendolin", "Dominguez", "0724970555", "gdominguez0@washingtonpost.com", "Toto12345678!", "Chemin de gom", "73420", "Voglans", "France", (float)45.622154, (float)5.8853216, new DateTime(2023, 02, 27));
 
             //Assert
 
@@ -90,7 +91,7 @@ namespace APIfilms.Controllers.Tests
             dataRepository = new UtilisateurManager(context);
             controller = new UtilisateursController(dataRepository);
 
-            Utilisateur u1 = new Utilisateur(new List<Notation>(), 1, "Calida", "Lilley", "0653930778", "clilleymd@last.fm", "Toto12345678!", "Impasse des bergeronnettes", "74200", "Allinges", "France", (float)46.344795, (float)6.4885845, new DateTime(2023, 02, 24));
+            Utilisateur u1 = new Utilisateur(new List<Notation>(), 1, "Calida", "Lilley", "0653930778", "clilleymd@last.fm", "Toto12345678!", "Impasse des bergeronnettes", "74200", "Allinges", "France", (float)46.344795, (float)6.4885845, new DateTime(2023, 02, 27));
             var result1 = controller.GetUtilisateurById(100);
 
 
@@ -114,7 +115,7 @@ namespace APIfilms.Controllers.Tests
             var result1 = controller.GetUtilisateurByEmail("gdominguez0@washingtonpost.com");
 
 
-            Utilisateur u2 = new Utilisateur(new List<Notation>(), 2, "Gwendolin", "Dominguez", "0724970555", "gdominguez0@washingtonpost.com", "Toto12345678!", "Chemin de gom", "73420", "Voglans", "France", (float)45.622154, (float)5.8853216, new DateTime(2023, 02, 24));
+            Utilisateur u2 = new Utilisateur(new List<Notation>(), 2, "Gwendolin", "Dominguez", "0724970555", "gdominguez0@washingtonpost.com", "Toto12345678!", "Chemin de gom", "73420", "Voglans", "France", (float)45.622154, (float)5.8853216, new DateTime(2023, 02, 27));
 
             //Assert
 
@@ -133,9 +134,10 @@ namespace APIfilms.Controllers.Tests
 
             //Act
             var result1 = controller.GetUtilisateurByEmail("aaaa");
+            
 
 
-            Utilisateur u2 = new Utilisateur(new List<Notation>(), 2, "Gwendolin", "Dominguez", "0724970555", "gdominguez0@washingtonpost.com", "Toto12345678!", "Chemin de gom", "73420", "Voglans", "France", (float)45.622154, (float)5.8853216, new DateTime(2023, 02, 24));
+            Utilisateur u2 = new Utilisateur(new List<Notation>(), 2, "Gwendolin", "Dominguez", "0724970555", "gdominguez0@washingtonpost.com", "Toto12345678!", "Chemin de gom", "73420", "Voglans", "France", (float)45.622154, (float)5.8853216, new DateTime(2023, 02, 27));
 
             //Assert
 
@@ -157,10 +159,10 @@ namespace APIfilms.Controllers.Tests
             // Arrange
             Random rnd = new Random();
             int chiffre = rnd.Next(1, 1000000000);
-
+           
             Utilisateur userAtester = new Utilisateur()
             {
-                UtilisateurId = 10,
+                UtilisateurId = 7,
                 Nom = "MACHIN",
                 Prenom = "Luc",
                 Mobile = "0606070809",
@@ -173,10 +175,10 @@ namespace APIfilms.Controllers.Tests
                 Latitude = null,
                 Longitude = null
             };
-
-            var result = controller.PutUtilisateur(10, userAtester).Result;
-
-            Utilisateur? userRecupere = context.Utilisateurs.Where(u => u.UtilisateurId == userAtester.UtilisateurId).FirstOrDefault();
+            // Act
+            var result = controller.PutUtilisateur(userAtester.UtilisateurId, userAtester).Result; // .Result pour appeler la méthode async de manière synchrone, afin d'attendre l’ajout
+            // Assert
+            Utilisateur? userRecupere = context.Utilisateurs.Where(u => u.UtilisateurId == userAtester.UtilisateurId).FirstOrDefault(); // On récupère l'utilisateur créé directement dans la BD grace à son mail unique
             Assert.AreEqual(userRecupere, userAtester, "Utilisateurs pas identiques");
 
 
@@ -264,6 +266,9 @@ namespace APIfilms.Controllers.Tests
             // Act
             var result = controller.PostUtilisateur(userAtester).Result;
 
+            Assert.IsInstanceOfType(result, typeof(ActionResult<Utilisateur>), "Pas un ActionResult<Utilisateur>");
+            Assert.IsInstanceOfType(result.Result, typeof(CreatedAtActionResult), "Pas un CreatedAtActionResult");
+
             Utilisateur? userRecupere = context.Utilisateurs.Where(u => u.Mobile == userAtester.Mobile).FirstOrDefault(); // On récupère l'utilisateur créé directement dans la BD grace à son mail
 
             userAtester.UtilisateurId = userRecupere.UtilisateurId;
@@ -311,6 +316,69 @@ namespace APIfilms.Controllers.Tests
 
 
         }
+
+        [TestMethod]
+        public void Postutilisateur_ModelValidated_CreationOK_AvecMoq()
+        {
+            // Arrange
+            var mockRepository = new Mock<IDataRepository<Utilisateur>>();
+            var userController = new UtilisateursController(mockRepository.Object);
+            Utilisateur user = new Utilisateur
+            {
+                Nom = "POISSON",
+                Prenom = "Pascal",
+                Mobile = "1",
+                Mail = "poisson@gmail.com",
+                Pwd = "Toto12345678!",
+                Rue = "Chemin de Bellevue",
+                CodePostal = "74940",
+                Ville = "Annecy-le-Vieux",
+                Pays = "France",
+                Latitude = null,
+                Longitude = null
+            };
+            // Act
+            var actionResult = userController.PostUtilisateur(user).Result;
+            // Assert
+            Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Utilisateur>), "Pas un ActionResult<Utilisateur>");
+            Assert.IsInstanceOfType(actionResult.Result, typeof(CreatedAtActionResult), "Pas un CreatedAtActionResult");
+            var result = actionResult.Result as CreatedAtActionResult;
+            Assert.IsInstanceOfType(result.Value, typeof(Utilisateur), "Pas un Utilisateur");
+            user.UtilisateurId = ((Utilisateur)result.Value).UtilisateurId;
+            Assert.AreEqual(user, (Utilisateur)result.Value, "Utilisateurs pas identiques");
+        }
+
+
+        [TestMethod]
+        public void GetUtilisateurById_ExistingIdPassed_ReturnsRightItem_AvecMoq()
+        {
+            // Arrange
+            Utilisateur user = new Utilisateur
+            {
+                UtilisateurId = 1,
+                Nom = "Calida",
+                Prenom = "Lilley",
+                Mobile = "0653930778",
+                Mail = "clilleymd@last.fm",
+                Pwd = "Toto12345678!",
+                Rue = "Impasse des bergeronnettes",
+                CodePostal = "74200",
+                Ville = "Allinges",
+                Pays = "France",
+                Latitude = 46.344795F,
+                Longitude = 6.4885845F
+            };
+            var mockRepository = new Mock<IDataRepository<Utilisateur>>();
+            mockRepository.Setup(x => x.GetByIdAsync(1).Result).Returns(user);
+            var userController = new UtilisateursController(mockRepository.Object);
+            // Act
+            var actionResult = userController.GetUtilisateurById(1).Result;
+            // Assert
+            Assert.IsNotNull(actionResult);
+            Assert.IsNotNull(actionResult.Value);
+            Assert.AreEqual(user, actionResult.Value as Utilisateur);
+        }
+
 
     }
 }
