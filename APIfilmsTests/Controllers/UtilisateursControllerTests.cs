@@ -27,7 +27,9 @@ namespace APIfilms.Controllers.Tests
         private IDataRepository<Utilisateur> dataRepository;
         UtilisateursController utilisateurController;
 
-        
+      
+
+
         public UtilisateursControllerTests()
         {
             var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
@@ -52,10 +54,7 @@ namespace APIfilms.Controllers.Tests
         [TestMethod()]
         public void GetUtilisateursTest()
         {
-            var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            context = new FilmRatingsDBContext(builder.Options);
-            dataRepository = new UtilisateurManager(context);
-            controller = new UtilisateursController(dataRepository);
+            
 
             var result = controller.GetUtilisateurs().Result.Value;
 
@@ -72,10 +71,7 @@ namespace APIfilms.Controllers.Tests
         [TestMethod()]
         public void GetUtilisateurByIdTest()
         {
-            var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            context = new FilmRatingsDBContext(builder.Options);
-            dataRepository = new UtilisateurManager(context);
-            controller = new UtilisateursController(dataRepository);
+           
 
             //Act
             var result1 = controller.GetUtilisateurById(2);
@@ -99,10 +95,7 @@ namespace APIfilms.Controllers.Tests
         [TestMethod()]
         public void GetUtilisateurByIdTest_NotFound()
         {
-            var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            context = new FilmRatingsDBContext(builder.Options);
-            dataRepository = new UtilisateurManager(context);
-            controller = new UtilisateursController(dataRepository);
+           
 
             Utilisateur u1 = new Utilisateur(new List<Notation>(), 1, "Calida", "Lilley", "0653930778", "clilleymd@last.fm", "Toto12345678!", "Impasse des bergeronnettes", "74200", "Allinges", "France", (float)46.344795, (float)6.4885845, new DateTime(2023, 02, 27));
             var result1 = controller.GetUtilisateurById(100);
@@ -119,10 +112,7 @@ namespace APIfilms.Controllers.Tests
         [TestMethod()]
         public void GetUtilisateurByEmailTest()
         {
-            var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            context = new FilmRatingsDBContext(builder.Options);
-            dataRepository = new UtilisateurManager(context);
-            controller = new UtilisateursController(dataRepository);
+           
 
             //Act
             var result1 = controller.GetUtilisateurByEmail("gdominguez0@washingtonpost.com");
@@ -140,10 +130,7 @@ namespace APIfilms.Controllers.Tests
         [TestMethod()]
         public void GetUtilisateurByEmail_NotFound()
         {
-            var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            context = new FilmRatingsDBContext(builder.Options);
-            dataRepository = new UtilisateurManager(context);
-            controller = new UtilisateursController(dataRepository);
+           
 
             //Act
             var result1 = controller.GetUtilisateurByEmail("aaaa");
@@ -201,10 +188,7 @@ namespace APIfilms.Controllers.Tests
         public async Task PutUtilisateurTest()
         {
 
-            var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            context = new FilmRatingsDBContext(builder.Options);
-            dataRepository = new UtilisateurManager(context);
-            controller = new UtilisateursController(dataRepository);
+           
 
             Utilisateur user = await context.Utilisateurs.FindAsync(146);
             user.Nom += "a";
@@ -220,10 +204,7 @@ namespace APIfilms.Controllers.Tests
         public void PostUtilisateurTest_CreationOK()
         {
 
-            var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            context = new FilmRatingsDBContext(builder.Options);
-            dataRepository = new UtilisateurManager(context);
-            controller = new UtilisateursController(dataRepository);
+          
 
             // Arrange
             Random rnd = new Random();
@@ -267,10 +248,7 @@ namespace APIfilms.Controllers.Tests
         public void PostUtilisateurTest_Mobile()
         {
 
-            var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            context = new FilmRatingsDBContext(builder.Options);
-            dataRepository = new UtilisateurManager(context);
-            controller = new UtilisateursController(dataRepository);
+           
 
             // Arrange
             Random rnd = new Random();
@@ -429,10 +407,7 @@ namespace APIfilms.Controllers.Tests
         public void DeleteUtilisateur_ModelValidated_404NotFound()
         {
 
-            var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            context = new FilmRatingsDBContext(builder.Options);
-            dataRepository = new UtilisateurManager(context);
-            controller = new UtilisateursController(dataRepository);
+            
             // Act
             var result = controller.DeleteUtilisateur(-1);
             Thread.Sleep(1000);
@@ -522,10 +497,7 @@ namespace APIfilms.Controllers.Tests
         [TestMethod]
         public void GetUtilisateurById_UnknownMailPassed_ReturnsNotFoundResult_AvecMoq()
         {
-            var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
-            context = new FilmRatingsDBContext(builder.Options);
-            dataRepository = new UtilisateurManager(context);
-            controller = new UtilisateursController(dataRepository);
+            
 
             var mockRepository = new Mock<IDataRepository<Utilisateur>>();
             var userController = new UtilisateursController(mockRepository.Object);
