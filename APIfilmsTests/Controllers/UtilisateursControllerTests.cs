@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using APIfilms.Models.DataManager;
 using APIfilms.Models.Repository;
 using Moq;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace APIfilms.Controllers.Tests
 {
@@ -34,7 +35,19 @@ namespace APIfilms.Controllers.Tests
             dataRepository = new UtilisateurManager(context);
             controller = new UtilisateursController(dataRepository);
         }
-        
+
+
+       /* [TestMethod()]
+        public async Task GetUtilisateursTestAsync()
+        {
+            var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
+            context = new FilmRatingsDBContext(builder.Options);
+            dataRepository = new UtilisateurManager(context);
+            controller = new UtilisateursController(dataRepository);
+
+            ActionResult<IEnumerable<Utilisateur>> users = await controller.GetUtilisateurs();
+            CollectionAssert.AreEqual(context.Utilisateurs.ToList(), users.Value.ToList(), "La liste renvoyée n'est pas la bonne.");
+        }*/
 
         [TestMethod()]
         public void GetUtilisateursTest()
@@ -46,7 +59,7 @@ namespace APIfilms.Controllers.Tests
 
             var result = controller.GetUtilisateurs().Result.Value;
 
-            Utilisateur u1 = new Utilisateur(new List<Notation>(), 1, "Calida", "Lilley", "0653930778", "clilleymd@last.fm", "Toto12345678!", "Impasse des bergeronnettes", "74200", "Allinges", "France", (float)46.344795, (float)6.4885845, new DateTime(2023, 02, 27));
+            Utilisateur u1 = new Utilisateur(new List<Notation>(), 1, "Calidaaaaa", "Lilley", "0653930778", "clilleymd@last.fm", "Toto12345678!", "Impasse des bergeronnettes", "74200", "Allinges", "France", (float)46.344795, (float)6.4885845, new DateTime(2023, 02, 27));
             Utilisateur u2 = new Utilisateur(new List<Notation>(), 2, "Gwendolin", "Dominguez", "0724970555", "gdominguez0@washingtonpost.com", "Toto12345678!", "Chemin de gom", "73420", "Voglans", "France", (float)45.622154, (float)5.8853216, new DateTime(2023, 02, 27));
             Utilisateur u3 = new Utilisateur(new List<Notation>(), 3, "Randolph", "Richings", "0630271158", "rrichings1@naver.com", "Toto12345678!", "Route des charmottes d'en bas", "74890", "Bons-en-Chablais", "France", (float)46.25732, (float)6.367676, new DateTime(2023, 02, 27));
 
@@ -148,7 +161,7 @@ namespace APIfilms.Controllers.Tests
         }
 
 
-        [TestMethod()]
+        /*[TestMethod()]
         public void PutUtilisateurTest()
         {
             var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
@@ -182,7 +195,24 @@ namespace APIfilms.Controllers.Tests
             Assert.AreEqual(userRecupere, userAtester, "Utilisateurs pas identiques");
 
 
+        }*/
+
+        [TestMethod()]
+        public async Task PutUtilisateurTest()
+        {
+
+            var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
+            context = new FilmRatingsDBContext(builder.Options);
+            dataRepository = new UtilisateurManager(context);
+            controller = new UtilisateursController(dataRepository);
+
+            Utilisateur user = await context.Utilisateurs.FindAsync(146);
+            user.Nom += "a";
+            await controller.PutUtilisateur(user.UtilisateurId, user);
+            Utilisateur modifie = await context.Utilisateurs.FindAsync(146);
+            Assert.AreEqual(user, modifie, "pas les memes");
         }
+
 
 
 
@@ -221,6 +251,11 @@ namespace APIfilms.Controllers.Tests
 
             userAtester.UtilisateurId = userRecupere.UtilisateurId;
             Assert.AreEqual(userRecupere, userAtester, "Utilisateurs pas identiques");
+
+            Assert.IsInstanceOfType(result, typeof(ActionResult<Utilisateur>), "Pas un ActionResult<Utilisateur>");
+            Assert.IsInstanceOfType(result.Result, typeof(CreatedAtActionResult), "Pas un CreatedAtActionResult");
+            var result2 = result.Result as CreatedAtActionResult;
+            Assert.IsInstanceOfType(result2.Value, typeof(Utilisateur), "Pas un Utilisateur");
 
 
 
@@ -316,6 +351,36 @@ namespace APIfilms.Controllers.Tests
 
 
         }*/
+
+        [TestMethod()]
+        public async Task DeleteUtilisateurTest()
+        {
+            Random rnd = new Random();
+            int chiffre = rnd.Next(1, 1000000000);
+            Utilisateur userAtester = new Utilisateur()
+            {
+                Nom = "MACHIN",
+                Prenom = "Luc",
+                Mobile = "0606070809",
+                Mail = "machin" + chiffre + "@gmail.com",
+                Pwd = "Toto1234!",
+                Rue = "Chemin de Bellevue",
+                CodePostal = "74940",
+                Ville = "Annecy-le-Vieux",
+                Pays = "France",
+                Latitude = null,
+                Longitude = null
+            };
+            EntityEntry<Utilisateur> res = context.Utilisateurs.Add(userAtester);
+            context.SaveChanges();
+            IActionResult result = await controller.DeleteUtilisateur(res.Entity.UtilisateurId);
+
+            Utilisateur user = context.Utilisateurs.Where(u => u.UtilisateurId == res.Entity.UtilisateurId).FirstOrDefault();
+
+            Assert.IsNull(user, "Non");
+
+
+        }
 
         [TestMethod]
         public void DeleteUtilisateur_ModelValidated_200OK()
@@ -532,18 +597,18 @@ namespace APIfilms.Controllers.Tests
         }
 
         [TestMethod]
-        public void Pututilisateur_CreationOK_AvecMoq()
+        public void PutUtilisateurTest_AvecMoq()
         {
-            // Arrange
-           
-            Utilisateur user = new Utilisateur
+            // Le mail doit être unique donc 2 possibilités :
+            // 1. on s'arrange pour que le mail soit unique en concaténant un random ou un timestamp
+            // 2. On supprime le user après l'avoir créé. Dans ce cas, nous avons besoin d'appeler la méthode DELETE de l’API ou remove du DbSet.
+            Utilisateur user = new Utilisateur()
             {
-                UtilisateurId = 1,
-                Nom = "POISSON",
-                Prenom = "Pascal",
-                Mobile = "1",
-                Mail = "poisson@gmail.com",
-                Pwd = "Toto12345678!",
+                Nom = "MACHIN",
+                Prenom = "Luc",
+                Mobile = "0606070809",
+                Mail = "machin" + "@gmail.com",
+                Pwd = "Toto1234!",
                 Rue = "Chemin de Bellevue",
                 CodePostal = "74940",
                 Ville = "Annecy-le-Vieux",
@@ -552,36 +617,23 @@ namespace APIfilms.Controllers.Tests
                 Longitude = null
             };
 
-            Utilisateur user2 = new Utilisateur
-            {
-                UtilisateurId = 1,
-                Nom = "POISSON",
-                Prenom = "Pascalou",
-                Mobile = "1",
-                Mail = "poisson@gmail.com",
-                Pwd = "Toto12345678!",
-                Rue = "Chemin de Bellevue",
-                CodePostal = "74940",
-                Ville = "Annecy-le-Vieux",
-                Pays = "France",
-                Latitude = null,
-                Longitude = null
-            };
-
-            var mockRepository = new Mock<IDataRepository<Utilisateur>>();
-            mockRepository.Setup(x => x.GetByIdAsync(1).Result).Returns(user);
-
-            var userController = new UtilisateursController(mockRepository.Object);
             // Act
-            var actionResult = userController.PutUtilisateur(user.UtilisateurId,user2).Result;
+            var mockRepository = new Mock<IDataRepository<Utilisateur>>();
+            mockRepository.Setup(x => x.GetByIdAsync(20).Result).Returns(user);
+            var userController = new UtilisateursController(mockRepository.Object);
+
+
+            user.Nom = "a";
+            userController.PutUtilisateur(user.UtilisateurId, user);
+
+            var actionResult = userController.GetUtilisateurById(20).Result;
             // Assert
-            //Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Utilisateur>), "Pas un ActionResult<Utilisateur>");
-            //Assert.IsInstanceOfType(actionResult.Result, typeof(CreatedAtActionResult), "Pas un CreatedAtActionResult");
-           // var result = actionResult as CreatedAtActionResult;
-           // Assert.IsInstanceOfType(result.Value, typeof(Utilisateur), "Pas un Utilisateur");
-            //user.UtilisateurId = ((Utilisateur)result.Value).UtilisateurId;
-            //Assert.AreEqual(user, (Utilisateur)result.Value, "Utilisateurs pas identiques");
-            Assert.IsInstanceOfType(actionResult, typeof(NoContentResult), "Pas un NoContentResult");
+            Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Utilisateur>), "Pas un ActionResult<Utilisateur>");
+            var result = actionResult.Value;
+            Console.WriteLine(result.GetType());
+            Assert.IsInstanceOfType(result, typeof(Utilisateur), "Pas un Utilisateur");
+            user.UtilisateurId = ((Utilisateur)result).UtilisateurId;
+            Assert.AreEqual(user, (Utilisateur)result, "Utilisateurs pas identiques");
         }
 
 
