@@ -279,7 +279,7 @@ namespace APIfilms.Controllers.Tests
         }
 
 
-        [TestMethod()]
+        /*[TestMethod()]
         public void DeleteUtilisateurTest()
         {
             var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
@@ -315,7 +315,71 @@ namespace APIfilms.Controllers.Tests
             Assert.AreNotEqual(userRecupere, userAtester, "Utilisateurs identiques");
 
 
+        }*/
+
+        [TestMethod]
+        public void DeleteUtilisateur_ModelValidated_200OK()
+        {
+            // Arrange
+            Random rnd = new Random();
+            int chiffre = rnd.Next(1, 1000000000);
+
+
+            Utilisateur userAtester = new Utilisateur()
+            {
+
+                Nom = "MACHIN",
+                Prenom = "Luc",
+                Mobile = "1",
+                Mail = "machin" + chiffre + "@gmail.com",
+                Pwd = "Toto1234!",
+                Rue = "Chemin de Bellevue",
+                CodePostal = "74940",
+                Ville = "Annecy-le-Vieux",
+                Pays = "France",
+                Latitude = null,
+                Longitude = null
+            };
+
+            //Verify Model
+            //VerifyModel(userAtester);
+
+            context.Utilisateurs.Add(userAtester);
+            context.SaveChanges();
+            var utlLast = context.Utilisateurs.OrderBy(k => k.UtilisateurId).LastOrDefault();
+
+            // Act
+            var result = controller.DeleteUtilisateur(utlLast.UtilisateurId).Result;
+
+            // Assert
+            
+            var userSuppr = controller.GetUtilisateurById(utlLast.UtilisateurId).Result;
+
+            Assert.AreEqual(((NoContentResult)result).StatusCode, StatusCodes.Status204NoContent, "Pas 204NoContent");
+           
+
         }
+
+        [TestMethod]
+        public void DeleteUtilisateur_ModelValidated_404NotFound()
+        {
+
+            var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql("Server=localhost;port=5432;Database=FilmRatingDB; uid=postgres;password=postgres;");
+            context = new FilmRatingsDBContext(builder.Options);
+            dataRepository = new UtilisateurManager(context);
+            controller = new UtilisateursController(dataRepository);
+            // Act
+            var result = controller.DeleteUtilisateur(-1);
+            Thread.Sleep(1000);
+
+            /* Asserts */
+            Assert.IsInstanceOfType(result, typeof(Task<IActionResult>), "Pas un Task<IActionResult>"); // Test du type de retour
+            Assert.IsNotNull(result.Result, "Erreur est null"); // Test de l'erreur
+            Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult), "Doit être un NotFoundResult"); // Test du type de l'erreur
+            Assert.AreEqual(((NotFoundResult)result.Result).StatusCode, StatusCodes.Status404NotFound, "Pas 404"); // Teste si l'erreur est une 404
+        }
+
+
 
         [TestMethod]
         public void Postutilisateur_ModelValidated_CreationOK_AvecMoq()
@@ -513,7 +577,7 @@ namespace APIfilms.Controllers.Tests
             // Assert
             //Assert.IsInstanceOfType(actionResult, typeof(ActionResult<Utilisateur>), "Pas un ActionResult<Utilisateur>");
             //Assert.IsInstanceOfType(actionResult.Result, typeof(CreatedAtActionResult), "Pas un CreatedAtActionResult");
-            var result = actionResult as CreatedAtActionResult;
+           // var result = actionResult as CreatedAtActionResult;
            // Assert.IsInstanceOfType(result.Value, typeof(Utilisateur), "Pas un Utilisateur");
             //user.UtilisateurId = ((Utilisateur)result.Value).UtilisateurId;
             //Assert.AreEqual(user, (Utilisateur)result.Value, "Utilisateurs pas identiques");

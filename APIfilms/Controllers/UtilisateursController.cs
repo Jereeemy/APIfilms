@@ -137,7 +137,7 @@ namespace APIfilms.Controllers
         public async Task<IActionResult> DeleteUtilisateur(int id)
         {
             var utilisateur = await dataRepository.GetByIdAsync(id);
-            if (utilisateur == null)
+            if (utilisateur.Value == null)
             {
                 return NotFound();
                 
