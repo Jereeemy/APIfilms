@@ -13,10 +13,15 @@ namespace APIfilms.Models.DataManager
         {
             filmsDbContext = context;
         }
-        public ActionResult<IEnumerable<Utilisateur>> GetAll() 
+
+        public async Task<ActionResult<IEnumerable<Utilisateur>>> GetAllAsync()
+        {
+            return await filmsDbContext.Utilisateurs.ToListAsync();
+        }
+        /*public ActionResult<IEnumerable<Utilisateur>> GetAll() 
         {
             return filmsDbContext.Utilisateurs.ToList();
-        }
+        }*/
  
         //public ActionResult<Utilisateur> GetById(int id)
         public async Task<ActionResult<Utilisateur>> GetByIdAsync(int id)

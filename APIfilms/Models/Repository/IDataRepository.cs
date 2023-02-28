@@ -5,11 +5,13 @@ namespace APIfilms.Models.Repository
 {
     public interface IDataRepository<TEntity>
     {
-        ActionResult<IEnumerable<TEntity>> GetAll();
+        //ActionResult<IEnumerable<TEntity>> GetAll();
+
+        Task<ActionResult<IEnumerable<TEntity>>> GetAllAsync();
         //ActionResult<TEntity> GetById(int id);
         // ActionResult<TEntity> GetByString(string str);
 
-       
+
         Task<ActionResult<TEntity>> GetByIdAsync(int id);
         Task<ActionResult<TEntity>> GetByStringAsync(string str);
 

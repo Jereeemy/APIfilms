@@ -39,7 +39,7 @@ namespace APIfilms.Controllers
         [ProducesResponseType(200)]
         public async Task<ActionResult<IEnumerable<Utilisateur>>> GetUtilisateurs()
         {
-            return dataRepository.GetAll();
+            return await dataRepository.GetAllAsync();
         }
 
 
