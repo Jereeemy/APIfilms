@@ -608,6 +608,51 @@ namespace APIfilms.Controllers.Tests
             Assert.AreEqual(user, (Utilisateur)result, "Utilisateurs pas identiques");
         }
 
+        /*[TestMethod]
+        public void Pututilisateur_ModelValidated_UpdateOK_AvecMoq()
+        {
+            // Arrange
+            Utilisateur userAMaJ = new Utilisateur
+            {
+                UtilisateurId = 1,
+                Nom = "Calida",
+                Prenom = "Lilley",
+                Mobile = "0653930778",
+                Mail = "clilleymd@last.fm",
+                Pwd = "Toto12345678!",
+                Rue = "Impasse des bergeronnettes",
+                CodePostal = "74200",
+                Ville = "Allinges",
+                Pays = "France",
+                Latitude = 46.344795F,
+                Longitude = 6.4885845F
+            };
+            Utilisateur userUpdated = new Utilisateur
+            {
+                UtilisateurId = 1,
+                Nom = "POISSONT",
+                Prenom = "Pascal",
+                Mobile = "0653930778",
+                Mail = "clilleymd@last.fm",
+                Pwd = "Toto12345678!",
+                Rue = "Impasse des bergeronnettes",
+                CodePostal = "74200",
+                Ville = "Allinges",
+                Pays = "France",
+                Latitude = 46.344795F,
+                Longitude = 6.4885845F
+            };
+            var mockRepository = new Mock<IDataRepository<Utilisateur>>();
+            mockRepository.Setup(x => x.GetByIdAsync(1).Result).Returns(userAMaJ);
+            var userController = new UtilisateursController(mockRepository.Object);
+
+            // Act
+            var actionResult = userController.PutUtilisateur(userUpdated.UtilisateurId, userUpdated).Result;
+
+            // Assert
+            Assert.IsInstanceOfType(actionResult, typeof(NoContentResult), "Pas un NoContentResult"); // Test du type de retour
+        }*/
+
 
 
     }
